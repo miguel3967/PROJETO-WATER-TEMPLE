@@ -1,0 +1,68 @@
+enable
+conf t
+int g0/0
+no shut
+exit
+ipv6 unicast-routing
+hostname RT-01
+enable secret TempleWater-123#
+banner motd "ACESSO APENAS PARA O DEPTO. DE TI DA WATER TEMPLE LTDA."
+username linkdoti privilege 15 secret hey-listen-3*
+ip domain-name watertemple.local
+crypto key generate rsa general-key modulus 1024
+line vty 0 15
+transport input ssh
+login local
+exit
+line console 0
+login local 
+exit
+service password-encryption
+security password min-length 8
+login block-for 180 attempts 3 within 60
+int g0/0.10
+encapsulation dot1q 10
+ip add 172.16.0.1 255.255.255.192
+ipv6 add 2001:db8:0:10::1/64
+ipv6 address fe80::1 link-local
+ip helper-add 172.16.0.114
+int g0/0.20
+encapsulation dot1q 20
+ip add 172.16.0.65 255.255.255.224
+ipv6 add 2001:db8:0:20::1/64
+ipv6 address fe80::1 link-local
+ip helper-add 172.16.0.114
+int g0/0.30
+encapsulation dot1q 30
+ip add 172.16.0.97 255.255.255.240
+ipv6 add 2001:db8:0:30::1/64
+ipv6 address fe80::1 link-local
+ip helper-add 172.16.0.114
+int g0/0.40
+encapsulation dot1q 40
+ip add 172.16.0.113 255.255.255.248
+ipv6 add 2001:db8:0:40::1/64
+ipv6 address fe80::1 link-local
+int g0/0.50
+encapsulation dot1q 50
+ip add 172.16.0.121 255.255.255.248
+ipv6 add 2001:db8:0:50::1/64
+ipv6 address fe80::1 link-local
+ip helper-add 172.16.0.114
+exit
+int s0/0/0
+ip add 189.100.0.1 255.255.255.252
+ipv6 add 2001:db8:faca::1/64
+no shut
+exit
+ip route 0.0.0.0 0.0.0.0 189.100.0.2
+ipv6 route ::/0 2001:db8:faca::2
+do wr
+
+
+
+
+
+
+	
+
